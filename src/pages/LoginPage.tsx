@@ -103,7 +103,7 @@ export function LoginPage() {
               Radiologia NR
             </h1>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Gestão completa para radiologia veterinária volante
+              Gestão completa
             </p>
           </div>
 
@@ -239,8 +239,10 @@ export function LoginPage() {
           )}
         </Card>
 
-        <p className="text-center text-[11px] text-gray-400">
-          Radiologia NR • Dados protegidos com RLS • PWA Offline-ready
+        <p className="text-center text-[11px] text-gray-400 leading-relaxed">
+          © 2026 Radiologia NR. Todos os direitos reservados.
+          <br />
+          Desenvolvido por Ruan Ennes
         </p>
       </div>
     </div>
