@@ -17,10 +17,9 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>
 
 export function LoginPage() {
-  const { signIn, signUp, resetPassword } = useAuth()
+  const { signIn, resetPassword } = useAuth()
   const navigate = useNavigate()
-  const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login')
-  const [nome, setNome] = useState('Nathalia Rangel')
+  const [mode, setMode] = useState<'login' | 'forgot'>('login')
   const [submitting, setSubmitting] = useState(false)
 
   const {
@@ -39,15 +38,9 @@ export function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setSubmitting(true)
     try {
-      if (mode === 'login') {
-        await signIn(data.email, data.password)
-        toast.success('Bem-vinda de volta, Nathalia!')
-        navigate('/')
-      } else if (mode === 'signup') {
-        await signUp(data.email, data.password, nome)
-        toast.success('Conta criada com sucesso!')
-        navigate('/')
-      }
+      await signIn(data.email, data.password)
+      toast.success('Bem-vinda de volta, Nathalia!')
+      navigate('/')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao autenticar')
     } finally {
@@ -100,10 +93,10 @@ export function LoginPage() {
               className="w-36 h-36 object-contain mb-2 rounded-3xl"
             />
             <h1 className="text-xl font-extrabold text-[#4B4D50] dark:text-white">
-              Radiologia NR
+              Bem-vindo de volta
             </h1>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Gestão completa
+              Acesse sua conta para continuar
             </p>
           </div>
 
@@ -129,7 +122,7 @@ export function LoginPage() {
                     id="email-forgot"
                     type="email"
                     className="pl-10"
-                    placeholder="nathalia@radiologianr.com.br"
+                    placeholder="novousuario@gmail.com"
                     {...register('email')}
                   />
                 </div>
@@ -148,18 +141,6 @@ export function LoginPage() {
             </form>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {mode === 'signup' && (
-                <div>
-                  <Label htmlFor="nome">Nome profissional</Label>
-                  <Input
-                    id="nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                    placeholder="Nathalia Rangel"
-                  />
-                </div>
-              )}
-
               <div>
                 <Label htmlFor="email">E-mail</Label>
                 <div className="relative">
@@ -168,7 +149,7 @@ export function LoginPage() {
                     id="email"
                     type="email"
                     className="pl-10"
-                    placeholder="nathalia@radiologianr.com.br"
+                    placeholder="novousuario@gmail.com"
                     {...register('email')}
                   />
                 </div>
@@ -208,11 +189,11 @@ export function LoginPage() {
               </div>
 
               <Button type="submit" className="w-full" size="lg" disabled={submitting}>
-                {mode === 'login' ? 'Entrar' : 'Criar conta'}
+                Entrar
                 <ArrowRight className="w-4 h-4" />
               </Button>
 
-              {!isSupabaseConfigured && mode === 'login' && (
+              {!isSupabaseConfigured && (
                 <Button
                   type="button"
                   variant="secondary"
@@ -223,18 +204,6 @@ export function LoginPage() {
                   Entrar rápido como Nathalia
                 </Button>
               )}
-
-              <div className="text-center pt-1">
-                <button
-                  type="button"
-                  onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-                  className="text-xs font-semibold text-gray-500 hover:text-[#9B7BC7] cursor-pointer"
-                >
-                  {mode === 'login'
-                    ? 'Ainda não tem conta? Criar acesso'
-                    : 'Já possui conta? Fazer login'}
-                </button>
-              </div>
             </form>
           )}
         </Card>
