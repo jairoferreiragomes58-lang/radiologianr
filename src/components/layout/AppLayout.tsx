@@ -127,8 +127,8 @@ export function AppLayout() {
         </main>
       </div>
 
-      {/* FAB "+" Mobile para Novo Atendimento */}
-      {location.pathname !== '/atendimentos' && (
+      {/* FAB "+" Mobile para Novo Atendimento (apenas na Home) */}
+      {location.pathname === '/' && (
         <button
           type="button"
           onClick={() => navigate('/atendimentos?novo=1')}
