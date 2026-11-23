@@ -790,10 +790,10 @@ export function AtendimentosPage() {
                     onChange={(e) => updateItemRow(idx, { especificacao: e.target.value })}
                   >
                     <option value="1 incidência">1 incidência</option>
-                    <option value="2 incidência">2 incidência</option>
-                    <option value="3 incidência">3 incidência</option>
+                    <option value="2 incidências">2 incidências</option>
+                    <option value="3 incidências">3 incidências</option>
                     {row.especificacao &&
-                      !['1 incidência', '2 incidência', '3 incidência'].includes(
+                      !['1 incidência', '2 incidências', '3 incidências'].includes(
                         row.especificacao
                       ) && (
                         <option value={row.especificacao}>{row.especificacao}</option>
