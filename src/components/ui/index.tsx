@@ -80,7 +80,7 @@ export const Input = React.forwardRef<
   <input
     ref={ref}
     className={cn(
-      'w-full h-11 px-3.5 rounded-2xl border border-[#E4DFF0] dark:border-[#342E49] bg-white dark:bg-[#161320] text-base sm:text-sm text-[#3A3C3F] dark:text-[#F3F1F9] placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#9B7BC7]/40 focus:border-[#9B7BC7] transition',
+      'w-full min-w-0 max-w-full h-11 px-3.5 rounded-2xl border border-[#E4DFF0] dark:border-[#342E49] bg-white dark:bg-[#161320] text-base sm:text-sm text-[#3A3C3F] dark:text-[#F3F1F9] placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#9B7BC7]/40 focus:border-[#9B7BC7] transition',
       className
     )}
     {...props}
@@ -110,7 +110,7 @@ export const Select = React.forwardRef<
   <select
     ref={ref}
     className={cn(
-      'w-full h-11 px-3.5 rounded-2xl border border-[#E4DFF0] dark:border-[#342E49] bg-white dark:bg-[#161320] text-base sm:text-sm text-[#3A3C3F] dark:text-[#F3F1F9] focus:outline-none focus:ring-2 focus:ring-[#9B7BC7]/40 focus:border-[#9B7BC7] transition',
+      'w-full min-w-0 max-w-full h-11 px-3.5 rounded-2xl border border-[#E4DFF0] dark:border-[#342E49] bg-white dark:bg-[#161320] text-base sm:text-sm text-[#3A3C3F] dark:text-[#F3F1F9] focus:outline-none focus:ring-2 focus:ring-[#9B7BC7]/40 focus:border-[#9B7BC7] transition',
       className
     )}
     {...props}

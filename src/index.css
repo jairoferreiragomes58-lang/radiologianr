@@ -38,6 +38,8 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-text-size-adjust: 100%;
     overflow-x: hidden;
+    overscroll-behavior-x: none;
+    max-width: 100%;
   }
 
   body {
@@ -46,6 +48,26 @@
     min-height: 100dvh;
     margin: 0;
     overflow-x: hidden;
+    overscroll-behavior-x: none;
+    max-width: 100%;
+  }
+
+  #root {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  /* iOS Safari: impede que inputs de data/mês/hora estourem a largura do container */
+  input[type='date'],
+  input[type='month'],
+  input[type='time'] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
   }
 }
 

@@ -141,8 +141,8 @@ export function DespesasPage() {
 
       {/* Filtros + Total */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <Card className="p-4 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-          <div>
+        <Card className="p-4 lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center overflow-hidden">
+          <div className="min-w-0">
             <Label htmlFor="desp-mes">Mês</Label>
             <Input
               id="desp-mes"
@@ -151,7 +151,7 @@ export function DespesasPage() {
               onChange={(e) => setMesFilter(e.target.value || 'all')}
             />
           </div>
-          <div>
+          <div className="min-w-0">
             <Label htmlFor="desp-cat">Categoria</Label>
             <Select
               id="desp-cat"
@@ -271,8 +271,8 @@ export function DespesasPage() {
         title={editing ? 'Editar despesa' : 'Nova despesa'}
       >
         <form onSubmit={handleSave} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="min-w-0">
               <Label htmlFor="d-data">Data *</Label>
               <Input
                 id="d-data"
@@ -282,7 +282,7 @@ export function DespesasPage() {
                 required
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <Label htmlFor="d-val">Valor (R$) *</Label>
               <Input
                 id="d-val"

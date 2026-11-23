@@ -542,8 +542,8 @@ export function AgendaPage() {
               onChange={(e) => setTitulo(e.target.value)}
             />
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            <div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="col-span-2 sm:col-span-1 min-w-0">
               <Label htmlFor="ev-data">Data</Label>
               <Input
                 id="ev-data"
@@ -553,7 +553,7 @@ export function AgendaPage() {
                 required
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <Label htmlFor="ev-ini">Início</Label>
               <Input
                 id="ev-ini"
@@ -562,7 +562,7 @@ export function AgendaPage() {
                 onChange={(e) => setHoraInicio(e.target.value)}
               />
             </div>
-            <div>
+            <div className="min-w-0">
               <Label htmlFor="ev-fim">Fim</Label>
               <Input
                 id="ev-fim"
