@@ -8,7 +8,6 @@ import {
   Plus,
   Search,
   Trash2,
-  Upload,
   Zap,
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -96,10 +95,6 @@ export function AtendimentosPage() {
   const [qpEspecie, setQpEspecie] = useState('Canino')
   const [qpRaca, setQpRaca] = useState('')
   const [qpTutor, setQpTutor] = useState('')
-
-  // Modal de importação CSV
-  const [csvModalOpen, setCsvModalOpen] = useState(false)
-  const [csvText, setCsvText] = useState('')
 
   // Abrir modal via query string (?novo=1&clinicaId=...)
   useEffect(() => {
@@ -347,66 +342,6 @@ export function AtendimentosPage() {
     setQuickPacOpen(false)
   }
 
-  // Importação CSV simples: Data;Paciente;Tutor;Clinica;Especificacao;Qtd;ValorUnit;Status
-  const handleImportCsv = async () => {
-    const lines = csvText
-      .split(/\r?\n/)
-      .map((l) => l.trim())
-      .filter(Boolean)
-    if (lines.length === 0) {
-      toast.error('Cole pelo menos uma linha CSV.')
-      return
-    }
-
-    let imported = 0
-    for (const line of lines) {
-      const sep = line.includes(';') ? ';' : ','
-      const cols = line.split(sep).map((c) => c.trim())
-      if (cols.length < 5) continue
-      // Ignora cabeçalho
-      if (cols[0].toLowerCase().includes('data')) continue
-
-      // Converte dd/mm/aaaa -> aaaa-mm-dd
-      let dataIso = getTodayISO()
-      if (/^\d{2}\/\d{2}\/\d{4}$/.test(cols[0])) {
-        const [d, m, y] = cols[0].split('/')
-        dataIso = `${y}-${m}-${d}`
-      } else if (/^\d{4}-\d{2}-\d{2}$/.test(cols[0])) {
-        dataIso = cols[0]
-      }
-
-      const pac = cols[1] || ''
-      const tut = cols[2] || ''
-      const cliName = (cols[3] || '').toLowerCase()
-      const foundCli = clinicas.find((c) => c.nome.toLowerCase().includes(cliName))
-      const espec = cols[4] || ''
-      const qtd = Number((cols[5] || '1').replace(',', '.')) || 1
-      const val = Number((cols[6] || '47').replace(',', '.')) || 0
-      const pago = (cols[7] || '').toLowerCase().includes('pago') && !(cols[7] || '').toLowerCase().includes('não') && !(cols[7] || '').toLowerCase().includes('nao')
-
-      await createAtendimento.mutateAsync({
-        data: dataIso,
-        clinica_id: foundCli?.id || null,
-        paciente_id: null,
-        tutor_id: null,
-        paciente_nome: pac,
-        tutor_nome: tut,
-        servico: 'Raio X',
-        urgente: false,
-        status_pagamento: pago ? 'pago' : 'nao_pago',
-        forma_pagamento: pago ? 'Pix' : '',
-        data_pagamento: pago ? dataIso : null,
-        observacoes: 'Importado via CSV',
-        itens: [{ especificacao: espec, quantidade: qtd, valor_unitario: val }],
-      })
-      imported++
-    }
-
-    toast.success(`${imported} atendimento(s) importado(s)!`)
-    setCsvText('')
-    setCsvModalOpen(false)
-  }
-
   const totalFiltrado = filtered.reduce((acc, a) => acc + a.total, 0)
   const totalPendenteFiltrado = filtered
     .filter((a) => a.status_pagamento === 'nao_pago')
@@ -427,10 +362,6 @@ export function AtendimentosPage() {
           </h1>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => setCsvModalOpen(true)}>
-            <Upload className="w-4 h-4" />
-            Importar CSV
-          </Button>
           <Button onClick={() => openNew()}>
             <Plus className="w-4 h-4" />
             Novo atendimento
@@ -1032,34 +963,6 @@ export function AtendimentosPage() {
             <Button type="submit">Salvar paciente</Button>
           </div>
         </form>
-      </Modal>
-
-      {/* Modal Importação CSV */}
-      <Modal
-        open={csvModalOpen}
-        onClose={() => setCsvModalOpen(false)}
-        title="Importar atendimentos (CSV)"
-        subtitle="Cole linhas do Excel/papel no formato: Data;Paciente;Tutor;Clínica;Especificação;Qtd;ValorUnit;Status"
-      >
-        <div className="space-y-4">
-          <div className="text-xs bg-[#F6F4FB] dark:bg-[#161320] p-3 rounded-xl font-mono text-gray-600 dark:text-gray-300">
-            21/11/2026;Thor;Mariana;Vet Vida;210;3;47;Pago
-            <br />
-            21/11/2026;Luna;Carlos;Pet Care;310;2;85;Não pago
-          </div>
-          <Textarea
-            rows={6}
-            placeholder="Cole aqui as linhas separadas por ponto e vírgula ou vírgula..."
-            value={csvText}
-            onChange={(e) => setCsvText(e.target.value)}
-          />
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setCsvModalOpen(false)}>
-              Cancelar
-            </Button>
-            <Button onClick={handleImportCsv}>Importar linhas</Button>
-          </div>
-        </div>
       </Modal>
     </div>
   )

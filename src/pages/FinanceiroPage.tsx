@@ -9,20 +9,14 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
 import {
   ChevronLeft,
   ChevronRight,
-  Download,
-  FileText,
   TrendingDown,
   TrendingUp,
 } from 'lucide-react'
-import { toast } from 'sonner'
 import { useAtendimentos, useClinicas, useDespesas } from '@/hooks/useData'
 import {
-  downloadFile,
   formatCurrency,
   formatDateBR,
   formatMonthYear,
@@ -140,84 +134,6 @@ export function FinanceiroPage() {
     return atMes
   }, [atMes, tab])
 
-  // Exportar CSV
-  const handleExportCSV = () => {
-    const header = [
-      'Data',
-      'Paciente',
-      'Tutor',
-      'Clinica',
-      'Servico',
-      'Especificacao',
-      'Qtd',
-      'Valor Total',
-      'Pagamento',
-    ]
-    const rows = atMes.map((a) => [
-      formatDateBR(a.data),
-      a.paciente_nome,
-      a.tutor_nome,
-      (a.clinica_id && clinicaMap.get(a.clinica_id)) || 'Avulso',
-      a.servico,
-      a.itens.map((i) => i.especificacao).join(' / '),
-      String(a.itens.reduce((acc, i) => acc + i.quantidade, 0)),
-      a.total.toFixed(2).replace('.', ','),
-      a.status_pagamento === 'pago' ? 'Pago' : 'Não pago',
-    ])
-    const csv = [header, ...rows].map((r) => r.map((c) => `"${c}"`).join(';')).join('\n')
-    downloadFile(csv, `relatorio-radiologia-nr-${monthKey}.csv`, 'text/csv')
-    toast.success('Relatório CSV exportado!')
-  }
-
-  // Exportar PDF
-  const handleExportPDF = () => {
-    const doc = new jsPDF()
-    const cliLabel =
-      clinicaExport === 'all'
-        ? 'Todas as clínicas'
-        : clinicaMap.get(clinicaExport) || 'Clínica'
-
-    doc.setFontSize(16)
-    doc.setTextColor(75, 77, 80)
-    doc.text('Radiologia NR — Relatório Financeiro', 14, 18)
-
-    doc.setFontSize(10)
-    doc.setTextColor(120, 120, 130)
-    doc.text(`Período: ${formatMonthYear(selectedMonth)}  |  Filtro: ${cliLabel}`, 14, 25)
-
-    doc.setFontSize(11)
-    doc.setTextColor(50, 50, 55)
-    doc.text(
-      `Faturado: ${formatCurrency(resumo.faturado)}   |   Recebido: ${formatCurrency(resumo.recebido)}   |   A receber: ${formatCurrency(resumo.aReceber)}`,
-      14,
-      34
-    )
-    doc.text(
-      `Despesas: ${formatCurrency(resumo.totalDespesas)}   |   Lucro líquido: ${formatCurrency(resumo.lucro)}`,
-      14,
-      41
-    )
-
-    autoTable(doc, {
-      startY: 48,
-      head: [['Data', 'Paciente', 'Tutor', 'Clínica', 'Especificação', 'Total', 'Status']],
-      body: atMes.map((a) => [
-        formatDateBR(a.data),
-        a.paciente_nome || '—',
-        a.tutor_nome || '—',
-        (a.clinica_id && clinicaMap.get(a.clinica_id)) || 'Avulso',
-        a.itens.map((i) => `${i.especificacao || 'RX'} (${i.quantidade}x)`).join(', '),
-        formatCurrency(a.total),
-        a.status_pagamento === 'pago' ? 'Pago' : 'Não pago',
-      ]),
-      headStyles: { fillColor: [155, 123, 199] },
-      styles: { fontSize: 8.5 },
-    })
-
-    doc.save(`relatorio-radiologia-nr-${monthKey}.pdf`)
-    toast.success('Relatório PDF gerado!')
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -238,14 +154,6 @@ export function FinanceiroPage() {
               </option>
             ))}
           </Select>
-          <Button variant="outline" size="sm" onClick={handleExportCSV}>
-            <Download className="w-4 h-4" />
-            CSV
-          </Button>
-          <Button size="sm" onClick={handleExportPDF}>
-            <FileText className="w-4 h-4" />
-            Exportar PDF
-          </Button>
         </div>
       </div>
 
