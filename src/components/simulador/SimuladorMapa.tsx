@@ -20,7 +20,7 @@ import {
   saveLastOrigin,
   type GeoPoint,
 } from '@/lib/geocoding'
-import { formatNumber, getGoogleMapsUrl } from '@/lib/utils'
+import { formatNumber, getMapsLinkProps } from '@/lib/utils'
 
 export type { GeoPoint }
 
@@ -585,9 +585,7 @@ export function SimuladorMapa({
 
         {destinoInput && (
           <a
-            href={getGoogleMapsUrl(destinoInput)}
-            target="_blank"
-            rel="noreferrer"
+            {...getMapsLinkProps(destinoInput)}
             className="absolute bottom-3 right-3 z-[400] bg-white/95 dark:bg-[#1E1B29]/95 hover:bg-[#9B7BC7] hover:text-white text-[#4B4D50] dark:text-white px-3 py-1.5 rounded-xl shadow-md text-xs font-bold inline-flex items-center gap-1.5 transition"
           >
             <Navigation className="w-3.5 h-3.5" />

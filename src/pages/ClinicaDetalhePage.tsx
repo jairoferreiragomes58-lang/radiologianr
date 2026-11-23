@@ -23,7 +23,7 @@ import {
   formatCurrency,
   formatDateBR,
   formatNumber,
-  getGoogleMapsUrl,
+  getMapsLinkProps,
   getWhatsAppUrl,
 } from '@/lib/utils'
 import { Badge, Button, Card, Input, Label, Skeleton } from '@/components/ui'
@@ -144,7 +144,7 @@ export function ClinicaDetalhePage() {
             </a>
           )}
           {clinica.endereco && (
-            <a href={getGoogleMapsUrl(clinica.endereco)} target="_blank" rel="noreferrer">
+            <a {...getMapsLinkProps(clinica.endereco)}>
               <Button variant="secondary" size="sm">
                 <Navigation className="w-4 h-4" />
                 Ir (Maps)

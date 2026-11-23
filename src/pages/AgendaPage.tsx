@@ -36,7 +36,7 @@ import {
   formatMonthYear,
   formatNumber,
   getGoogleMapsRouteUrl,
-  getGoogleMapsUrl,
+  getMapsLinkProps,
   getTodayISO,
 } from '@/lib/utils'
 import {
@@ -374,11 +374,7 @@ export function AgendaPage() {
                           </Button>
                         )}
                         {cli?.endereco && (
-                          <a
-                            href={getGoogleMapsUrl(cli.endereco)}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
+                          <a {...getMapsLinkProps(cli.endereco)}>
                             <Button variant="secondary" size="sm">
                               <Navigation className="w-3.5 h-3.5" />
                               Ir
@@ -491,11 +487,7 @@ export function AgendaPage() {
                           </Badge>
                         )}
                         {clinica?.endereco && (
-                          <a
-                            href={getGoogleMapsUrl(clinica.endereco)}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
+                          <a {...getMapsLinkProps(clinica.endereco)}>
                             <Button variant="success" size="sm">
                               <Navigation className="w-3.5 h-3.5" />
                               Ir

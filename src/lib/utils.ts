@@ -66,8 +66,38 @@ export function getWhatsAppUrl(phone: string, text?: string): string {
   return `https://wa.me/${withCountry}${encoded}`
 }
 
+export function isIOSDevice(): boolean {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent || ''
+  return (
+    /iPad|iPhone|iPod/.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  )
+}
+
 export function getGoogleMapsUrl(address: string): string {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`
+  const encoded = encodeURIComponent(address)
+  if (isIOSDevice()) {
+    // Abre diretamente o app nativo Mapas do iPhone já com a rota de carro traçada
+    return `maps://?daddr=${encoded}&dirflg=d`
+  }
+  if (typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent || '')) {
+    // Abre diretamente o app Google Maps no Android já iniciando a navegação
+    return `https://www.google.com/maps/dir/?api=1&destination=${encoded}&travelmode=driving&dir_action=navigate`
+  }
+  return `https://www.google.com/maps/dir/?api=1&destination=${encoded}&travelmode=driving`
+}
+
+export function getMapsLinkProps(address: string): {
+  href: string
+  target?: '_blank'
+  rel?: string
+} {
+  const href = getGoogleMapsUrl(address)
+  if (href.startsWith('maps://')) {
+    return { href }
+  }
+  return { href, target: '_blank', rel: 'noreferrer' }
 }
 
 export function getGoogleMapsRouteUrl(addresses: string[]): string {

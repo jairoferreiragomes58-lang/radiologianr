@@ -29,7 +29,7 @@ import {
   getSavedOrigin,
   type GeoPoint,
 } from '@/lib/geocoding'
-import { formatCurrency, formatNumber, getGoogleMapsUrl, getWhatsAppUrl } from '@/lib/utils'
+import { formatCurrency, formatNumber, getMapsLinkProps, getWhatsAppUrl } from '@/lib/utils'
 import { Badge, Button, Card, EmptyState, Input, Label, Modal, Skeleton, Textarea } from '@/components/ui'
 import type { Clinica } from '@/types'
 
@@ -265,10 +265,8 @@ export function ClinicasPage() {
                     )}
                     {c.endereco && (
                       <a
-                        href={getGoogleMapsUrl(c.endereco)}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label="Abrir rota no Google Maps"
+                        {...getMapsLinkProps(c.endereco)}
+                        aria-label="Abrir rota no app de mapas"
                         className="w-9 h-9 rounded-xl bg-[#EDE7F6] text-[#7F5DB0] hover:bg-[#DFD5F2] flex items-center justify-center transition"
                       >
                         <Navigation className="w-4 h-4" />
