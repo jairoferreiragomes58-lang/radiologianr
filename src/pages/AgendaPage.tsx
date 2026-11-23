@@ -294,11 +294,8 @@ export function AgendaPage() {
             <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
               <div>
                 <h2 className="font-bold text-base">
-                  Eventos de {formatDateBR(selectedDate)}
+                  Compromissos do {formatDateBR(selectedDate)}
                 </h2>
-                <p className="text-xs text-gray-500">
-                  {dayEvents.length} visita(s) programada(s)
-                </p>
               </div>
               {dayEvents.length > 0 && (
                 <Button variant="secondary" size="sm" onClick={() => setTab('rota')}>
