@@ -358,7 +358,7 @@ export function AtendimentosPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold text-[#3A3C3F] dark:text-white">
-            Atendimentos / Vendas
+            Atendimentos
           </h1>
         </div>
         <div className="flex items-center gap-2">

@@ -213,7 +213,7 @@ export function SimuladorPage() {
         <div>
           <h1 className="text-2xl font-extrabold text-[#3A3C3F] dark:text-white flex items-center gap-2">
             <Calculator className="w-6 h-6 text-[#9B7BC7]" />
-            Simulador de Deslocamento
+            Simulador
           </h1>
         </div>
         {veiculo?.modelo && (
